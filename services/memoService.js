@@ -1,4 +1,4 @@
-// services/userService.js
+// services/memoService.js
 
 const mysql = require('mysql2');
 
@@ -18,9 +18,9 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-class UserService {
+class MemoService {
   static getAll(callback) {
-    connection.query('SELECT * FROM user_info', (error, results) => {
+    connection.query('SELECT * FROM memo_content', (error, results) => {
       if (error) {
         console.error('Error executing MySQL query:', error);
         callback(error, null);
@@ -30,17 +30,18 @@ class UserService {
     });
   }
 
-  static create(userData, callback) {
-    const { nickname, password } = userData;
-    connection.query('INSERT INTO user_info (nickname, password) VALUES (?, ?)', [nickname, password], (error, results) => {
+  static create(memoData, callback) {
+    const { content, timestamp } = memoData;
+    connection.query('INSERT INTO memo_content (content, timestamp) VALUES (?, ?)', [content, timestamp], (error, results) => {
+      console.log(results);
       if (error) {
         console.error('Error executing MySQL query:', error);
         callback(error, null);
         return;
       }
-      callback(null, { id: results.insertId, nickname, password });
+      callback(null, { content, timestamp });
     });
   }
 }
 
-module.exports = UserService;
+module.exports = MemoService;
