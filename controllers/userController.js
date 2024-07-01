@@ -6,10 +6,11 @@ class UserController {
   static getAll(req, res) {
     UserService.getAll((error, results) => {
       if (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        // res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({status:500,success:false,message:"실패"});
         return;
       }
-      var json = {title:"test",data:results}
+      var json = {status:200,success:true,message:"성공",data:results}
       // res.json(results);
       res.send(json);
     });
@@ -17,12 +18,13 @@ class UserController {
 
   static create(req, res) {
     const userData = req.body;
-    UserService.create(userData, (error, result) => {
+    UserService.create(userData, (error, results) => {
       if (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({status:500,success:false,message:"실패"});
         return;
       }
-      res.json(result);
+      var json = {status:200,success:true,message:"성공",data:results}
+      res.json(json);
     });
   }
 }
